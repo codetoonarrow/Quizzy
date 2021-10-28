@@ -3,7 +3,7 @@
     import { fade } from "svelte/transition";
     export let question;
     export let nextQuestion;
-    let index = ["a", "b" , "c", "d"]
+    let letters = ["a", "b" , "c", "d"]
     let isCorrect;
     let isAnswered = false;
 
@@ -19,7 +19,7 @@
         {
             answer: question.correct_answer,
             correct: true,
-            index: index
+            letters: letters
         }
     ];
 
@@ -52,8 +52,11 @@
     </h5>
 {/if}
 
+<!-- If the answer is incorrect show the correct answer by higlighting it when a green border -->
 {#each allAnswers as answer, i}
-    <h4>{index[i]}</h4>
+    <h4 class:isCorrect={ isCorrect && isAnswered === answer.correct} 
+        class:wrong={!isCorrect && isAnswered && !answer.correct}
+    >{letters[i]}</h4>
      <button class="answer" disabled={isAnswered} on:click={() => checkQuestion(answer.correct)}>
          {@html answer.answer}
     </button>
@@ -69,12 +72,18 @@
     h5.wrong {
         color: red;
     }
-
+    h4.wrong {
+        color: red;
+    }
     h5.isCorrect{
         color:green;
     }
+    h4.isCorrect {
+        border: 5px solid green;
+        display: inline-block;
+    }
     .answer {
-        display:block;
+        display:inline-block;
         border-radius: 5px;
     }
 
