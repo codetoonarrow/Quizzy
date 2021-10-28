@@ -3,7 +3,7 @@
     import { fade } from "svelte/transition";
     export let question;
     export let nextQuestion;
-
+    let index = ["a", "b" , "c", "d"]
     let isCorrect;
     let isAnswered = false;
 
@@ -18,7 +18,8 @@
         ...answers,
         {
             answer: question.correct_answer,
-            correct: true
+            correct: true,
+            index: index
         }
     ];
 
@@ -42,7 +43,7 @@
 <h3>{@html question.question}</h3>
 
 {#if isAnswered}
-    <h5 class:isCorrect class:wrong={!isCorrect}>
+    <h5 class:isCorrect transition:fade class:wrong={!isCorrect}>
     {#if isCorrect}
         You got it right
     {:else}
@@ -51,7 +52,8 @@
     </h5>
 {/if}
 
-{#each allAnswers as answer}
+{#each allAnswers as answer, i}
+    <h4>{index[i]}</h4>
      <button class="answer" disabled={isAnswered} on:click={() => checkQuestion(answer.correct)}>
          {@html answer.answer}
     </button>
